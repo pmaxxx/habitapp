@@ -1,6 +1,6 @@
 const addHabits = document.querySelector('.add-habit');
 const habitsList = document.querySelector('.habits');
-const habits = [];
+const habits = JSON.parse(localStorage.getItem('habits')) || [];
 
 // add a Habit
 function addHabit(e) {
@@ -17,8 +17,9 @@ function addHabit(e) {
     };
 
     habits.push(habit);
-    this.reset();
     listHabits(habits, habitsList);
+    localStorage.setItem('habits', JSON.stringify(habits));
+    this.reset();
 }
 
 // List Habit
@@ -33,6 +34,7 @@ function listHabits(habit = [], habitsList) {
 		 <label for="habit${i}"><span>${habit.reps}/${habit.totalCounts} ${
                 habit.timeframe
             }</span> ${habit.text}</label>
+			<button class="delete" data-index=${i} id=delete${i}>Delete</button>
 		 </li>
 		`;
         })
@@ -54,10 +56,23 @@ function toggleCompleted(e) {
     }
 
     listHabits(habits, habitsList);
+    localStorage.setItem('habits', JSON.stringify(habits));
 }
 
 // Delete habit
+function deleteHabit(e) {
+    if (!e.target.matches('button')) return;
+    const el = e.target;
+    const index = el.dataset.index;
+
+    habits.splice(index, 1);
+
+    listHabits(habits, habitsList);
+    localStorage.setItem('habits', JSON.stringify(habits));
+}
 
 addHabits.addEventListener('submit', addHabit);
 habitsList.addEventListener('click', toggleCompleted);
-// listHabits(habits, habitsList);
+habitsList.addEventListener('click', deleteHabit);
+
+listHabits(habits, habitsList);
