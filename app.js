@@ -71,6 +71,11 @@ function deleteHabit(e) {
     localStorage.setItem('habits', JSON.stringify(habits));
 }
 
+// // Edit Habit
+// function editHabit(e) {
+// 	if(!e.target.mathes)
+// }
+
 addHabits.addEventListener('submit', addHabit);
 habitsList.addEventListener('click', toggleCompleted);
 habitsList.addEventListener('click', deleteHabit);
